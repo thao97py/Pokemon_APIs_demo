@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>What's that Pokemon?</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="what_that_poke.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            for (var i = 1; i<150;i++){
+                $('.pokemon').append('<img id="'+i+'" src=" https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+i+'.png">');
+            };
+            $(document).on('click','img',function(){
+                $('.right').val("");
+                var id=$(this).attr("id");
+                $.get('https://pokeapi.co/api/v2/pokemon/'+id+'/', function(response){
+                    var pokedex= "";
+                    pokedex +='<h1>'+response.name+'</h1>';
+                    pokedex += '<img src="'+ response.sprites.front_default+'">';
+                    pokedex += '<h2>Height:</h2><p>' + response.height + '</p>';
+                    pokedex += '<h2>Weight:</h2><p>' + response.weight + '</p>';
+                    pokedex += '<h2>Type:</h2><ul>';
+                    for(var k=0; k< response.types.length;k++){
+                        console.log(response.types[k]);
+                        pokedex += '<li>' + response.types[k].type.name +'</li>';
+                    };
+                    pokedex += '</ul>';
+                    $('.right').html(pokedex);
+
+                }, 'json');
+                
+            });
+        });
+     </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="left">
+                <h1>What's that Pokemon? Build Your Own Pokedex</h1>
+                <h3>Click on your favorite pokemons!</h3>
+                <div class="pokemon">
+
+                </div>
+        </div>
+
+        <div class="right">
+            
+        </div>
+    </div>
+</body>
+</html>
